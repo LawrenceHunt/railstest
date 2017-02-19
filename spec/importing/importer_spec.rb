@@ -2,10 +2,11 @@ require 'rails_helper'
 
 describe VoteImporter do
 
-  subject(:importer) { described_class.new }
   let(:parser) { double(:voteparser) }
   let(:creator) { double(:creator) }
-
+  subject(:importer) { described_class.new }
+  importer.parser = parser
+  importer.creator = creator
 
 
   # describe '#read_file_and_add_votes' do
@@ -22,20 +23,17 @@ describe VoteImporter do
 
   describe '#seed_database_from' do
     it 'successfully creates a campaign' do
-      expect {  }
+      expect(:creator).to receive(:create_campaign).with(1).argument
+      importer.seed_database_from(["1168123059", "test_campaign", "during", "test_candidate"])
     end
     it 'successfully creates a candidate' do
-
+      expect(:creator).to receive(:create_candidate).with(2).arguments
+      importer.seed_database_from(["1168123059", "test_campaign", "during", "test_candidate"])
     end
     it 'successfully creates a vote' do
-
+      expect(:creator).to receive(:create_vote).with(3).arguments
+      importer.seed_database_from(["1168123059", "test_campaign", "during", "test_candidate"])
     end
   end
 
-
 end
-
-
-# votes
-
-# DEFAULT 1168123059 Campaign:ssss_uk_zzactions CONN:MIG01TU MSISDN:00777778559999 GUID:50E9B098-4F3E-4433-AC0B-AC55A7290117 Shortcode:63334

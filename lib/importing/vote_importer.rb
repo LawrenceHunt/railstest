@@ -28,7 +28,7 @@ class VoteImporter
     end
       campaign = @creator.create_campaign(campaign_name)
       candidate = @creator.create_candidate(candidate_name, campaign.id)
-      @creator.create_vote(vote_time, candidate, validity)
+      @creator.create_vote(vote_time, campaign.id, candidate.id, validity)
   end
 
 end
