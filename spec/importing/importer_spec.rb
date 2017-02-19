@@ -14,7 +14,7 @@ describe VoteImporter do
   describe '#check_valid_and_process' do
     it 'prints a rejection of an invalid line' do
       line = "DEFAULT 1168123059 Campaign:ssss_uk_zzactions CONN:MIG01TU MSISDN:00777778559999 GUID:50E9B098-4F3E-4433-AC0B-AC55A7290117 Shortcode:63334"
-      expect(importer.check_valid_and_process(line)).to eq "Invalid line: #{line}"
+      expect(subject.check_valid_and_process(line)).to eq "Invalid line: #{line}"
     end
   end
 
