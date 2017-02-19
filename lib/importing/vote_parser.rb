@@ -2,10 +2,10 @@ class VoteParser
 
   def parse_vote(line)
     line += "\n"
-    vote_time = line.gsub(VOTE_REGEX, '\1')
-    campaign_name = line.gsub(VOTE_REGEX, '\2')
-    validity = line.gsub(VOTE_REGEX, '\3')
-    candidate_name = line.gsub(VOTE_REGEX, '\4')
+    vote_time = line.gsub(VOTE_REGEX, '\1').chomp
+    campaign_name = line.gsub(VOTE_REGEX, '\2').chomp
+    validity = line.gsub(VOTE_REGEX, '\3').chomp
+    candidate_name = line.gsub(VOTE_REGEX, '\4').chomp
     [vote_time, campaign_name, validity, candidate_name]
   end
 
