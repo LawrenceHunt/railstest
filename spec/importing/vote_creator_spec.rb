@@ -4,21 +4,25 @@ describe VoteCreator do
 
   subject(:vote_creator) { described_class.new }
 
+  campaign = Campaign.create(name: "test_campaign")
+  candidate = Candidate.create(name: "test_candidate", campaign_id: campaign.id)
+
   describe '#create_campaign' do
     it 'can create a campaign given the correct params' do
-      expect {create_campaign('test_campaign')}.to change { Campaign.count }.by(1)
+      expect {subject.create_campaign('another_test_campaign')}.to change { Campaign.count }.by(1)
     end
   end
 
   describe '#create_candidate' do
     it 'can create a candidate given the correct params' do
-      expect {create_candidate('test_candidate1', 30)}.to change { Candidate.count }.by(1)
+      p campaign.id
+      expect {subject.create_candidate('another_test_candidate', campaign.id)}.to change { Candidate.count }.by(1)
     end
   end
 
   describe '#create_vote' do
     it 'can create a vote given the correct params' do
-      expect {create_vote(1168041805, 30, 20, "during")}.to change { Candidate.count }.by(1)
+      expect {subject.create_vote(1168041805, campaign.id, candidate.id, "during")}.to change { Vote.count }.by(1)
     end
   end
 

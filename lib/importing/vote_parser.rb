@@ -10,8 +10,9 @@ class VoteParser
   end
 
   def check_valid(line)
-    if (match_regex?(line))
-      check_utf8(line)
+    line = filter_utf8(line)
+    if (match_regex?(line + "\n"))
+      return line
     else
       false
     end
@@ -22,7 +23,7 @@ class VoteParser
   VOTE_REGEX = /^VOTE\s(.+)\sCampaign:(.+)\sValidity:(.+)\sChoice:(.+)\sCONN:.+\sMSISDN:.+\sGUID:.+\sShortcode:.+\n/
 
   # Deletes any non-UTF-8 characters in the line
-  def check_utf8(line)
+  def filter_utf8(line)
     line.encode('UTF-8', 'binary', invalid: :replace, undef: :replace, replace: '')
   end
   # Checks line follows the general formula defined by the REGEX
