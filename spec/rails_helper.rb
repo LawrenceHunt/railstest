@@ -10,7 +10,7 @@ require 'capybara/poltergeist'
 Capybara.javascript_driver = :poltergeist
 require 'support/database_cleaner'
 require 'features/web_helpers'
-require_relative '../lib/seeding/vote_importer'
+require_relative '../lib/importing/vote_importer'
 
 
 # Add additional requires below this line. Rails is not loaded until this point!

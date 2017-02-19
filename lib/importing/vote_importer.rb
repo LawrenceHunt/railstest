@@ -1,45 +1,34 @@
-class Seeder
+require_relative 'vote_parser', 'vote_creator'
 
-  def add_votes(filename)
+class VoteImporter
 
-
-
+  def initialize
+    @parser = VoteParser.new
+    @creator = VoteCreator.new
   end
 
-  vote_data = File.read(Rails.root.join('lib', 'seeding', 'data', 'votes.txt')).to_s
+  def read_file_and_add_votes(filename)
+    vote_data = File.read(Rails.root.join('lib', 'importing', 'data', filename)).to_s
+    vote_data.each_line { |line| add_vote(line) }
+  end
 
-  VOTE_REGEX = /^VOTE\s(.+)\sCampaign:(.+)\sValidity:(.+)\sChoice:(.+)\sCONN:.+\sMSISDN:.+\sGUID:.+\sShortcode:.+\n/
-
-  vote_data.each_line do |line|
-
-    # Guard clause deals with non-UTF-8 characters
-    line.encode('UTF-8', 'binary', invalid: :replace, undef: :replace, replace: '')
-
-    # Guard clause checks a vote line matches the correct format
-    if (!line.match(VOTE_REGEX))
-      p "Invalid vote line!"
+  def check_valid_and_process(line)
+    if @parser.check_valid(line) == false
+      p "Invalid line: #{line}"
     else
-      # Regex filters out attributes
-      vote_time = line.gsub(VOTE_REGEX, '\1')
-      campaign_name = line.gsub(VOTE_REGEX, '\2')
-      validity = line.gsub(VOTE_REGEX, '\3')
-      candidate_name = line.gsub(VOTE_REGEX, '\4')
-
-      vote = Vote.new
-      campaign = Campaign.where(name: campaign_name).first_or_create
-      candidate = Candidate.where(name: candidate_name, campaign_id: campaign.id).first_or_create
-
-      vote.time = vote_time
-      vote.campaign = campaign
-      vote.candidate = candidate
-      vote.validity = validity
-
-      if(vote.save)
-        p "vote saved - time: #{vote_time}, campaign:#{campaign_name}, choice: #{candidate_name}"
-      else
-        p "error, vote not saved..."
-      end
+      line = @parser.check_valid(line)
+      fields = @parser.parse_vote(line)
+      seed_database_from(fields)
     end
+  end
+
+  def seed_database_from(fields)
+    [vote_time, campaign_name, validity, candidate_name].each_with_index do |field, n|
+      field = fields[n]
+    end
+      campaign = @creator.create_campaign(campaign_name)
+      candidate = @creator.create_candidate(candidate_name, campaign.id)
+      @creator.create_vote(vote_time, candidate, validity)
   end
 
 end
