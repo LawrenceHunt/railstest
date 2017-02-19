@@ -1,0 +1,27 @@
+<h1> Campaign: <%= @campaign.name %> </h1>
+
+<table>
+  <tr>
+  <th>Choice</th>
+  <th>Valid Votes</th>
+  </tr>
+  <% @candidates.each do |candidate| %>
+  <tr class = "candidate_row">
+  <td class="candidate_name"><%= candidate.name %> </td>
+  <td class="vote_count"><%= candidate.votes.where(validity: "during").count %> </td>
+  </tr>
+<% end %>
+</table>
+
+<table>
+  <tr>
+    <th>
+      Invalid votes cast
+    </th>
+    <th id="invalid_vote_count">
+      <%= @campaign.votes.count - @campaign.votes.where(validity: "during").count %>
+    </th>
+  </tr>
+</table>
+
+<h1><%= link_to "<< Home", "/" %><h1>

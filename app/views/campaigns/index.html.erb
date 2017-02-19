@@ -1,0 +1,14 @@
+<h1>Campaigns</h1>
+
+<% if @campaigns.any? %>
+  <h2>
+  <table>
+    <% @campaigns.each do |campaign| %>
+    <tr>
+    <td class="campaign_name"><%= link_to campaign.name, "/campaigns/#{campaign.id}" %> </td>
+    </tr>
+  <% end %>
+  </table>
+  <% else %>
+  <h2>No campaigns listed yet. Seed the database!</h2>
+  <% end %>
