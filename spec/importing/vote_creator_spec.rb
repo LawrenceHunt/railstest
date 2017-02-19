@@ -18,7 +18,7 @@ describe VoteCreator do
 
   describe '#create_vote' do
     it 'can create a vote given the correct params' do
-      expect {create_vote(1168041805, 'test_candidate1', 30)}.to change { Candidate.count }.by(1)
+      expect {create_vote(1168041805, 30, 20, "during")}.to change { Candidate.count }.by(1)
     end
   end
 

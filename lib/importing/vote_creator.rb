@@ -16,7 +16,7 @@ class VoteCreator
       vote.validity = validity
 
       if(vote.save)
-        p "vote saved - time: #{vote_time}, campaign:#{campaign_name}, choice: #{candidate_name}"
+        p "vote saved - time: #{vote_time}, campaign:#{vote.campaign.name}, choice: #{vote.candidate.name}"
       else
         p "error, vote not saved..."
       end
